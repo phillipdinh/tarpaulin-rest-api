@@ -15,3 +15,11 @@ Course.belongsTo(User, {
 })
 
 module.exports = Course
+
+exports.CourseClientFields = [
+    "subject",
+    "number",
+    "title",
+    "term",
+    "instructorId"
+]

@@ -15,3 +15,11 @@ Submission.belongsTo(User, {
 })
 
 module.exports = Submission
+
+exports.SubmissionClientFields = [
+    "assignmentId",
+    "studentId",
+    "timestamp",
+    "grade",
+    "file"
+]
