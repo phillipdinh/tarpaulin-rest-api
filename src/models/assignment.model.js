@@ -8,7 +8,10 @@ const Assignment = sequelize.define("assignment", {
     points: { type: DataTypes.INTEGER, allowNull: false },
     duedate: { type: DataTypes.DATE, allowNull: false }
 })
-//TODO add one-many relationship in course model
+Assignment.belongsTo(Course, {
+	foreignKey: 'courseId',
+	as: 'course',
+  });
 Assignment.hasMany(Submission, {
     foreignKey: "assignmentId",
     as: "submissions"
