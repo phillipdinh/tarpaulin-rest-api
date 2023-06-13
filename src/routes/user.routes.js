@@ -1,16 +1,17 @@
 const express = require('express');
 users = require('../controllers/user.controller');
-// TODO: import authentication middleware
+
+const { requireAuth } = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
 // Endpoint to create a new user
-router.post('/', users.createUser);
+router.post('/', requireAuth, users.createUser);
 
 // Endpoint for user login
-router.post('/login', users.authenticateUser);
+router.post('/login', requireAuth, users.authenticateUser);
 
 // Endpoint to get a user by id
-router.get('/:id', getUserById);
+router.get('/:id', requireAuth, users.getUserById);
 
 module.exports = router;

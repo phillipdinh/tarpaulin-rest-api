@@ -18,16 +18,19 @@ async function requireAuth(req, res, next){
             const payload = jwt.verify(token, secretKey)
             req.user = payload.sub
             const user = await User.findByPk(payload.sub)
-            req.isAdmin = user.admin
+            req.userRole = user.role
         } else {
             req.user = null
-            req.isAdmin = false
+            req.userRole = null
         }
         next()
-    } catch (e) {
-        res.status(401).json({ error: "Invalid authentication token.", msg: e.message })
+    } catch (err) {
+        res.status(401).json({ error: "Invalid authentication token.", msg: err.message })
     }
 }
 
+const invalidRoleMessage = { error: "Unauthorized to access this resource" }
+
 exports.genToken = genToken
 exports.requireAuth = requireAuth
+exports.invalidRoleMessage = invalidRoleMessage
