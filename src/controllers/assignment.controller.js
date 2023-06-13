@@ -18,8 +18,29 @@ const router = Router()
  * whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId`
  * can create an Assignment.
  */
-router.post("/", async function (req, res) {
-    //TODO Add authorization check
+// router.post("/", async function (req, res) {
+//     //TODO Add authorization check
+//     try {
+//         const assignment = await Assignment.create(
+//             req.body,
+//             AssignmentClientFields
+//         )
+//         res.status(201).send({ id: assignment.id })
+//     } catch (e) {
+//         if (e instanceof ValidationError) {
+//             res.status(400).send({ error: e.message })
+//         } else {
+//             next(e)
+//         }
+//     }
+//     /*else {
+//         res.status(403).send({
+//             err: "Unauthorized to access the specified resource"
+//         })
+//     }
+// 	*/
+// })
+async function createAssignment(req, res, next) {
     try {
         const assignment = await Assignment.create(
             req.body,
@@ -33,21 +54,28 @@ router.post("/", async function (req, res) {
             next(e)
         }
     }
-    /*else {
-        res.status(403).send({
-            err: "Unauthorized to access the specified resource"
-        })
-    }
-	*/
-})
+}
 
 /* TODO /assignments/{id} Get
  * Returns summary data about the Assignment, excluding the list of Submissions.
  */
-router.get("/:id", async function (req, res, next) {
+// router.get("/:id", async function (req, res, next) {
+//     const id = req.params.id
+//     try {
+//         //TODO Excluse list of submissions
+//         const assignment = await Assignment.findByPk(id)
+//         if (assignment) {
+//             res.status(200).send(assignment)
+//         } else {
+//             next()
+//         }
+//     } catch (e) {
+//         next()
+//     }
+// })
+async function getAssignment(req, res, next) {
     const id = req.params.id
     try {
-        //TODO Excluse list of submissions
         const assignment = await Assignment.findByPk(id)
         if (assignment) {
             res.status(200).send(assignment)
@@ -55,9 +83,9 @@ router.get("/:id", async function (req, res, next) {
             next()
         }
     } catch (e) {
-        next()
+        next(e)
     }
-})
+}
 
 /* TODO /assignments/{id} Patch
  * Performs a partial update on the data for the Assignment.
@@ -66,11 +94,33 @@ router.get("/:id", async function (req, res, next) {
  * ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId`
  * can update an Assignment.
  */
-router.patch("/:id", async function (req, res, next) {
-    //TODO Add authorization check
+// router.patch("/:id", async function (req, res, next) {
+//     //TODO Add authorization check
+//     const id = req.params.id
+//     const assignment = await Assignment.findByPk(id)
+//
+//     try {
+//         const result = await Assignment.update(req.body, {
+//             where: { id: id },
+//             fields: AssignmentClientFields
+//         })
+//         if (result[0] > 0) {
+//             res.status(204).send()
+//         } else {
+//             next()
+//         }
+//     } catch (e) {
+//         next(e)
+//     }
+//     /*else {
+//         res.status(403).send({
+//             err: "Unauthorized to access the specified resource"
+//         })
+//     }*/
+// })
+async function updateAssignment(req, res, next) {
     const id = req.params.id
     const assignment = await Assignment.findByPk(id)
-
     try {
         const result = await Assignment.update(req.body, {
             where: { id: id },
@@ -84,20 +134,37 @@ router.patch("/:id", async function (req, res, next) {
     } catch (e) {
         next(e)
     }
-    /*else {
-        res.status(403).send({
-            err: "Unauthorized to access the specified resource"
-        })
-    }*/
-})
+}
+
 /* TODO /assignments/{id} Delete
  * Completely removes the data for the specified Assignment, including all submissions.
  * Only an authenticated User with 'admin' role or an authenticated 'instructor' User
  * whose ID matches the `instructorId` of the Course corresponding to the
  * Assignment's `courseId` can delete an Assignment.
  */
-router.delete("/:id", requireAuthentication, async function (req, res, next) {
-    //TODO Add authorization check
+// router.delete("/:id", requireAuthentication, async function (req, res, next) {
+//     //TODO Add authorization check
+//     const id = req.params.id
+//     const assignment = await Assignment.findByPk(id)
+//
+//     try {
+//         const result = await assignment.destroy({ where: { id: id } })
+//         if (result > 0) {
+//             res.status(204).send()
+//         } else {
+//             next()
+//         }
+//     } catch (e) {
+//         next(e)
+//     }
+//     /*else {
+//         res.status(403).send({
+//             err: "Unauthorized to access the specified resource"
+//         })
+//     } */
+// })
+
+async function deleteAssignment(req, res, next) {
     const id = req.params.id
     const assignment = await Assignment.findByPk(id)
 
@@ -111,12 +178,7 @@ router.delete("/:id", requireAuthentication, async function (req, res, next) {
     } catch (e) {
         next(e)
     }
-    /*else {
-        res.status(403).send({
-            err: "Unauthorized to access the specified resource"
-        })
-    } */
-})
+}
 
 /* TODO /assignments/{id}/submissions Get
  * Returns the list of all Submissions for an Assignment. This list should be paginated.
@@ -124,7 +186,7 @@ router.delete("/:id", requireAuthentication, async function (req, res, next) {
  * whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId`
  * can fetch the Submissions for an Assignment.
  * */
-router.get("/:assignmentId/submissions", async function (req, res, next) {
+async function getAllSubmissions(req, res, next) {
     //TODO Add authorization check
 
     let page = parseInt(req.query.page) || 1
@@ -171,7 +233,8 @@ router.get("/:assignmentId/submissions", async function (req, res, next) {
     } catch (e) {
         next(e)
     }
-})
+}
+
 /* TODO /assignments/{id}/submissions Post
  * Create and store a new Assignment with specified data
  * and adds it to the application's database.
@@ -179,9 +242,7 @@ router.get("/:assignmentId/submissions", async function (req, res, next) {
  * the Course corresponding to the Assignment's `courseId` can create a Submission.
  */
 
-router.post("/:assignmentId/submissions", async function (req, res, next) {
-    //TODO Add authentication check
-	
+async function createSubmission(req, res, next) {
     const assignmentId = req.params.assignmentId
 
     try {
@@ -197,10 +258,7 @@ router.post("/:assignmentId/submissions", async function (req, res, next) {
             next(e)
         }
     }
-    /*else {
-        res.status(403).send({
-            err: "Unauthorized to access the specified resource"
-        })
-    }
-	*/
-})
+}
+
+
+module.exports = { getAllSubmissions, createSubmission, deleteAssignment, getAssignment, updateAssignment }
