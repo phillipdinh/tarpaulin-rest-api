@@ -1,6 +1,7 @@
 const Course = require('../models/course.model');
 const User = require("../models/user.model");
-
+const Assignment = require('../models/assignment.model');
+const userCourse = require('../models/userCourse.model');
 /*
 Course information fetching – this action, implemented by the GET /courses
 and GET /courses/{id} endpoints, allows users to see information about all
@@ -91,7 +92,12 @@ async function getStudentsByCourseId(req, res) {
             },
         });
 
-        if (course) {
+        if (course) { // Getting an "unresolved variable users" warning here
+            // But the warning "Unresolved variable users" might be coming up because the IDE
+            // isn't aware of the dynamic properties added to the course object by Sequelize.
+            // The users property is added by Sequelize when you include associated
+            // User models in a query. It isn't statically defined anywhere, so static analysis
+            // tools like those used in IDEs can't detect it. SHOULD work at runtime.
             res.status(200).json(course.users);
         } else {
             res.status(404).json({ error: 'Course not found' });
@@ -102,8 +108,55 @@ async function getStudentsByCourseId(req, res) {
 }
 
 async function updateEnrollmentByCourseId(req, res) {
-    // TODO: Need to refer to database schema
-    // Depends on the structure of the request body for PUT /courses/{id}/enrollment
+    // TODO: Verify if the user is authenticated and has the necessary permissions
+
+    const { add = [], remove = [] } = req.body;
+
+    if (!Array.isArray(add) || !Array.isArray(remove)) {
+        return res.status(400).json({ error: 'Invalid body. "add" and "remove" fields must be arrays.' });
+    }
+
+    const courseId = req.params.id;
+
+    try {
+        const course = await Course.findByPk(courseId);
+
+        if (!course) {
+            return res.status(404).json({ error: 'Course not found' });
+        }
+
+        // Unenroll students
+        for (const studentId of remove) {
+            await userCourse.destroy({
+                where: {
+                    courseId,
+                    userId: studentId
+                }
+            });
+        }
+
+        // Enroll students
+        for (const studentId of add) {
+            // Avoid duplicate entries
+            const existingEnrollment = await UserCourse.findOne({
+                where: {
+                    courseId,
+                    userId: studentId
+                }
+            });
+
+            if (!existingEnrollment) {
+                await userCourse.create({
+                    courseId,
+                    userId: studentId
+                });
+            }
+        }
+
+        return res.status(200).json({ success: 'Enrollment updated successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 }
 
 /*
