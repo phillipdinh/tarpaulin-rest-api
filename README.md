@@ -46,6 +46,7 @@
 |-- Dockerfile
 |-- README.md
 ```
+
 node_modules: Node.js dependencies.
 src: API Source Code
 controllers: API endpoint logic
@@ -57,4 +58,5 @@ utils: Utility functions and classes that don't fit into other specific parts of
 config: Configuration files
 public: Static files, such as HTML or CSS files, if needed.
 server.js: Application entry point
+
 
