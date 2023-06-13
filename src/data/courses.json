@@ -1,0 +1,23 @@
+[
+    {
+        "subject": "Mathematics",
+        "number": "101",
+        "title": "Calculus I",
+        "term": "Spring 2023",
+        "instructorId": 2
+    },
+    {
+        "subject": "Computer Science",
+        "number": "101",
+        "title": "Intro to Programming",
+        "term": "Spring 2023",
+        "instructorId": 2
+    },
+    {
+        "subject": "Physics",
+        "number": "201",
+        "title": "General Physics II",
+        "term": "Spring 2023",
+        "instructorId": 2
+    }
+]
