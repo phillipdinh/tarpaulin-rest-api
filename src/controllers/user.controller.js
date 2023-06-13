@@ -32,6 +32,12 @@ async function authenticateUser(req, res) {
     }
 }
 
+/*
+User data fetching – this action, implemented by the GET /users/{id} endpoint,
+allows Users to see their own data.  Importantly, only a logged-in User can see
+their own data.  The data returned by this endpoint should also include the list
+of classes the User is enrolled in (for student Users) or teaching (for instructor Users).
+ */
 async function getUserById(req, res) {
     // TODO: Add authentication and authorization middleware to protect this route.
     try {
