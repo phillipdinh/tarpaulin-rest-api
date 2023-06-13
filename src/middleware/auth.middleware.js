@@ -3,20 +3,31 @@ const { User } = require('../models/user.model')
 
 const secretKey = 'placeholder'
 
-async function checkAuth(req, res, next){
+function genToken(userId) {
+    const payload = { sub: userId }
+    return jwt.sign(payload, secretKey, { expiresIn: '24h' })
+}
+
+async function requireAuth(req, res, next){
     const authHeader = req.get('Authorization') || ''
     const authHeaderParts = authHeader.split(' ')
     const token = authHeaderParts[0] == 'Bearer' ? authHeaderParts[1] : null
 
     try {
-        const payload = jwt.verify(token, secretKey)
-        req.user = payload.sub
-        const user = await User.findByPk(payload.sub)
-        req.validAuthToken = true
-        next();
-    } catch(e) {
-        req.validAuthToken = false
-        next();
+        if (token) {
+            const payload = jwt.verify(token, secretKey)
+            req.user = payload.sub
+            const user = await User.findByPk(payload.sub)
+            req.isAdmin = user.admin
+        } else {
+            req.user = null
+            req.isAdmin = false
+        }
+        next()
+    } catch (e) {
+        res.status(401).json({ error: "Invalid authentication token.", msg: e.message })
     }
 }
-exports.checkAuth = checkAuth
+
+exports.genToken = genToken
+exports.requireAuth = requireAuth
