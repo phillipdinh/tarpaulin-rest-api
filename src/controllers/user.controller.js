@@ -16,8 +16,7 @@ async function authenticateUser(req, res) {
         const user = await User.findOne({
             where: {
                 email: req.body.email,
-                password: req.body.password, // TODO: Hash this password before saving to
-                // database???
+                password: req.body.password,
             },
         });
 

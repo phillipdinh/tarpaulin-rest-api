@@ -10,7 +10,7 @@ const {
     SubmissionClientFields
 } = require("../models/submission.model")
 
-const router = Router()
+
 
 /* TODO  /assignments Post
  * Create and store a new Assignment with specified data and adds it to the application's database.
@@ -19,7 +19,7 @@ const router = Router()
  * can create an Assignment.
  */
 // router.post("/", async function (req, res) {
-//     //TODO Add authorization check
+//     //TODO Add authentication check
 //     try {
 //         const assignment = await Assignment.create(
 //             req.body,
@@ -41,6 +41,8 @@ const router = Router()
 // 	*/
 // })
 async function createAssignment(req, res, next) {
+    
+    // TODO Add authentication check
     try {
         const assignment = await Assignment.create(
             req.body,
@@ -95,7 +97,7 @@ async function getAssignment(req, res, next) {
  * can update an Assignment.
  */
 // router.patch("/:id", async function (req, res, next) {
-//     //TODO Add authorization check
+//     //TODO Add authentication check
 //     const id = req.params.id
 //     const assignment = await Assignment.findByPk(id)
 //
@@ -121,6 +123,7 @@ async function getAssignment(req, res, next) {
 async function updateAssignment(req, res, next) {
     const id = req.params.id
     const assignment = await Assignment.findByPk(id)
+    // TODO Add authentication check
     try {
         const result = await Assignment.update(req.body, {
             where: { id: id },
@@ -143,7 +146,7 @@ async function updateAssignment(req, res, next) {
  * Assignment's `courseId` can delete an Assignment.
  */
 // router.delete("/:id", requireAuthentication, async function (req, res, next) {
-//     //TODO Add authorization check
+//     //TODO Add authentication check
 //     const id = req.params.id
 //     const assignment = await Assignment.findByPk(id)
 //
@@ -167,7 +170,7 @@ async function updateAssignment(req, res, next) {
 async function deleteAssignment(req, res, next) {
     const id = req.params.id
     const assignment = await Assignment.findByPk(id)
-
+    // TODO Add authentication check
     try {
         const result = await assignment.destroy({ where: { id: id } })
         if (result > 0) {
@@ -187,7 +190,7 @@ async function deleteAssignment(req, res, next) {
  * can fetch the Submissions for an Assignment.
  * */
 async function getAllSubmissions(req, res, next) {
-    //TODO Add authorization check
+    //TODO Add authentication check
 
     let page = parseInt(req.query.page) || 1
     page = page < 1 ? 1 : page
@@ -244,7 +247,7 @@ async function getAllSubmissions(req, res, next) {
 
 async function createSubmission(req, res, next) {
     const assignmentId = req.params.assignmentId
-
+    // TODO Add authentication check
     try {
         const submission = await Submission.create(
             req.body,
@@ -261,4 +264,4 @@ async function createSubmission(req, res, next) {
 }
 
 
-module.exports = { getAllSubmissions, createSubmission, deleteAssignment, getAssignment, updateAssignment }
+module.exports = { createAssignment, getAllSubmissions, createSubmission, deleteAssignment, getAssignment, updateAssignment }

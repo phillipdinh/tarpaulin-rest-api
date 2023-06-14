@@ -18,7 +18,6 @@
 |   |   |-- user.routes.js
 |   |   |-- course.routes.js
 |   |   |-- assignment.routes.js
-|   |   |-- submission.routes.js
 |   |-- /middlewares
 |   |   |-- auth.middleware.js
 |   |   |-- error.middleware.js

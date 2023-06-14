@@ -96,8 +96,8 @@ async function getStudentsByCourseId(req, res) {
             // But the warning "Unresolved variable users" might be coming up because the IDE
             // isn't aware of the dynamic properties added to the course object by Sequelize.
             // The users property is added by Sequelize when you include associated
-            // User models in a query. It isn't statically defined anywhere, so static analysis
-            // tools like those used in IDEs can't detect it. SHOULD work at runtime.
+            // User models in a query. It isn't statically defined anywhere hence improper
+            // detection. Should work at runtime.
             res.status(200).json(course.users);
         } else {
             res.status(404).json({ error: 'Course not found' });
