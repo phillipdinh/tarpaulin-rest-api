@@ -11,6 +11,8 @@ const morgan = require("morgan")
 
 const api = require("./api")
 const sequelize = require("./lib/sequelize")
+const { rateLimit } = require("./middleware/rate.middleware")
+const { checkAuth } = require("./middleware/auth.middleware")
 
 const app = express()
 const port = process.env.PORT || 8000
@@ -21,6 +23,9 @@ const port = process.env.PORT || 8000
 app.use(morgan("dev"))
 
 app.use(express.json())
+
+app.use(checkAuth)
+app.use(rateLimit)
 
 /*
  * All routes for the API are written in modules in the api/ directory.  The
