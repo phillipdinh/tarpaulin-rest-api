@@ -1,4 +1,4 @@
-const redis = requre('redis');
+const redis = require('redis');
 const e = require('cors');
 const redisClient = require('../services/redisService');
 
