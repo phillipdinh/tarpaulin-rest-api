@@ -48,12 +48,6 @@ async function createAssignment(req, res, next) {
     } else {
         res.status(403).json(invalidRoleMessage)
     }
-    /*else {
-//         res.status(403).send({
-//             err: "Unauthorized to access the specified resource"
-//         })
-//     }
-// 	*/
 }
 
 /* TODO /assignments/{id} Get
@@ -117,11 +111,6 @@ async function updateAssignment(req, res, next) {
     } else {
         return res.status(403).json(invalidRoleMessage)
     }
-    /*else {
-//         res.status(403).send({
-//             err: "Unauthorized to access the specified resource"
-//         })
-//     }*/
 }
 
 /* TODO /assignments/{id} Delete
@@ -162,11 +151,6 @@ async function deleteAssignment(req, res, next) {
     } else {
         return res.status(403).json(invalidRoleMessage)
     }
-    /*else {
-//         res.status(403).send({
-//             err: "Unauthorized to access the specified resource"
-//         })
-//     } */
 }
 
 
