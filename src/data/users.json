@@ -16,5 +16,47 @@
         "email": "adam.smith@example.com",
         "password": "password123",
         "role": "student"
+    },
+    {
+        "name": "Sarah Johnson",
+        "email": "sarah.johnson@example.com",
+        "password": "password123",
+        "role": "student"
+    },
+    {
+        "name": "Michael Brown",
+        "email": "michael.brown@example.com",
+        "password": "password123",
+        "role": "student"
+    },
+    {
+        "name": "Emily Davis",
+        "email": "emily.davis@example.com",
+        "password": "password123",
+        "role": "student"
+    },
+    {
+        "name": "Daniel Wilson",
+        "email": "daniel.wilson@example.com",
+        "password": "password123",
+        "role": "student"
+    },
+    {
+        "name": "Olivia Taylor",
+        "email": "olivia.taylor@example.com",
+        "password": "password123",
+        "role": "student"
+    },
+    {
+        "name": "Matthew Anderson",
+        "email": "matthew.anderson@example.com",
+        "password": "password123",
+        "role": "student"
+    },
+    {
+        "name": "Ava Martinez",
+        "email": "ava.martinez@example.com",
+        "password": "password123",
+        "role": "student"
     }
 ]
