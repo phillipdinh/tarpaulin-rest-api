@@ -2,7 +2,7 @@
  * This file contains a simple script to populate the database with initial
  * data from the files in the data/ directory.
  */
-
+require('dotenv').config()
 const sequelize = require("./src/lib/sequelize")
 
 const { User, UserClientFields } = require("./src/models/user.model")

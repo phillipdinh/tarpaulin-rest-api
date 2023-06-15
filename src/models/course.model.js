@@ -9,12 +9,13 @@ const Course = sequelize.define("course", {
     term: { type: DataTypes.STRING, allowNull: false }
 })
 
-module.exports = Course
-
-exports.CourseClientFields = [
+const CourseClientFields = [
     "subject",
     "number",
     "title",
     "term",
     "instructorId"
 ]
+
+exports.Course = Course
+exports.CourseClientFields = CourseClientFields
