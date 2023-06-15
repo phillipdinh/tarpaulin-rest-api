@@ -20,18 +20,9 @@
 |   |   |-- assignment.routes.js
 |   |-- /middlewares
 |   |   |-- auth.middleware.js
-|   |   |-- error.middleware.js
+|   |   |-- rate.middleware.js
 |   |-- /services
-|   |   |-- authService.js
-|   |   |-- emailService.js
-|   |   |-- uploadService.js
 |   |   |-- redisService.js
-|   |-- /utils
-|   |   |-- apiError.js
-|   |   |-- logger.js
-|   |-- /config
-|   |   |-- app.config.js
-|   |   |-- db.config.js
 |   |-- server.js
 |-- /public
 |-- /uploads
