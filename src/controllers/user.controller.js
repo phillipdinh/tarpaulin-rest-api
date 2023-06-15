@@ -1,5 +1,4 @@
 const { User } = require('../models/user.model');
-const { createToken } = require('../lib/jwt');
 const { genToken, invalidRoleMessage } = require('../middleware/auth.middleware');
 
 async function createUser(req, res) {
