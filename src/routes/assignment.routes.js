@@ -1,7 +1,8 @@
 const express = require('express');
-const router = express.Router();
 const assignments = require('../controllers/assignment.controller.js');
 submissions = require('../controllers/submission.controller');
+
+const router = express.Router();
 
 // POST a new assignment
 router.post('/assignments', assignments.createAssignment);
@@ -16,10 +17,10 @@ router.patch('/assignments/:courseId', assignments.updateAssignment);
 router.delete('/assignments/:courseId', assignments.deleteAssignment);
 
 // GET all submissions of an assignment
-router.get('/assignments/:courseId/submissions', assignments.getAllSubmissions);
+router.get('/assignments/:courseId/submissions', submissions.getAllSubmissions);
 
 // POST a new submission for an assignment
-router.post('/assignments/:courseId/submissions', assignments.createSubmission);
+router.post('/assignments/:courseId/submissions', submissions.createSubmission);
 
 // POST a new submission for an assignment
 router.post('/assignments/:courseId/submissions', submissions.createSubmission)
