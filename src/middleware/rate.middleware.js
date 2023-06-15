@@ -3,7 +3,7 @@ const e = require('cors');
 const redisClient = require('../services/redisService');
 
 const rateLimitWindowMillis = 60000
-const rateLimitRefreshRate = rateLimitMaxRequests / rateLimitWindowMillis
+let rateLimitRefreshRate
 
 async function rateLimit(req, res, next) {
   let rateLimitMaxRequests
@@ -32,6 +32,7 @@ async function rateLimit(req, res, next) {
 
   const timestamp = Date.now()
   const ellapsedMillis = timestamp - tokenBucket.last
+  rateLimitRefreshRate = rateLimitMaxRequests / rateLimitWindowMillis
   tokenBucket.tokens += ellapsedMillis * rateLimitRefreshRate
   tokenBucket.tokens = Math.min(tokenBucket.tokens, rateLimitMaxRequests)
   tokenBucket.last = timestamp
