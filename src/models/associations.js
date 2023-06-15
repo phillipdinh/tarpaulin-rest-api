@@ -4,7 +4,10 @@ const { Assignment } = require('./assignment.model');
 const { Submission } = require('./submission.model');
 const { UserCourse } = require('./userCourse.model');
 
-User.belongsToMany(Course, { through: UserCourse, foreignKey: 'instructorId' });
+Course.belongsTo(User, { foreignKey: 'instructorId' });
+User.hasMany(Course, { foreignKey: 'instructorId'});
+
+User.belongsToMany(Course, { through: UserCourse, foreignKey: 'studentId' });
 Course.belongsToMany(User, { through: UserCourse, foreignKey: 'courseId' });
 
 Assignment.belongsTo(Course, { foreignKey: 'courseId' });

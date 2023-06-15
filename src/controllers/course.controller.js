@@ -1,7 +1,7 @@
-const Course = require('../models/course.model');
-const User = require("../models/user.model");
-const Assignment = require('../models/assignment.model');
-const userCourse = require('../models/userCourse.model');
+const { Course } = require('../models/course.model');
+const { User } = require("../models/user.model");
+const { Assignment } = require('../models/assignment.model');
+const { userCourse } = require('../models/userCourse.model');
 
 const { invalidRoleMessage } = require('../middleware/auth.middleware');
 

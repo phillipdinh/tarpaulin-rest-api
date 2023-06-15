@@ -20,12 +20,13 @@ const User = sequelize.define("user", {
 	}
 })
 
-
-module.exports = User
-
-exports.UserClientFields = [
+const UserClientFields = [
 	'name',
 	'email',
 	'password',
 	'role'
 ]
+
+
+exports.User = User
+exports.UserClientFields = UserClientFields

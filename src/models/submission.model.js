@@ -9,12 +9,14 @@ const Submission = sequelize.define("submission", {
     file: { type: DataTypes.STRING, allowNull: false }
 })
 
-module.exports = Submission
-
-exports.SubmissionClientFields = [
+const SubmissionClientFields = [
     "assignmentId",
     "studentId",
     "timestamp",
     "grade",
     "file"
 ]
+
+
+exports.Submission = Submission
+exports.SubmissionClientFields = SubmissionClientFields

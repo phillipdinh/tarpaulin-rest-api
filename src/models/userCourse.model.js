@@ -1,24 +1,24 @@
 const { DataTypes } = require("sequelize")
 const sequelize = require("../lib/sequelize")
-const User = require("./user.model")
-const Course = require("./course.model")
+const { User } = require("./user.model")
+const { Course } = require("./course.model")
 
 const UserCourse = sequelize.define('UserCourse', {
-    instructorId: {
+    studentId: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'users',
+            model: User,
             key: 'id',
         },
     },
     courseId: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'courses',
+            model: Course,
             key: 'id',
         },
     },
 });
 
 
-module.exports = UserCourse
+exports.UserCourse = UserCourse

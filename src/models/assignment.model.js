@@ -8,6 +8,7 @@ const Assignment = sequelize.define("assignment", {
     due: { type: DataTypes.DATE, allowNull: false }
 })
 
-module.exports = Assignment
+const AssignmentClientFields = ["courseId", "title", "points", "due"]
 
-exports.AssignmentClientFields = ["courseId", "title", "points", "due"]
+exports.Assignment = Assignment
+exports.AssignmentClientFields = AssignmentClientFields
