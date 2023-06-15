@@ -1,6 +1,6 @@
 const { User, UserClientFields } = require('../models/user.model');
 const { Course } = require('../models/course.model');
-const { UserCourse } = require('../userCourse.model');
+const { UserCourse } = require('../models/userCourse.model');
 const { genToken, invalidRoleMessage } = require('../middleware/auth.middleware');
 
 async function createUser(req, res) {
