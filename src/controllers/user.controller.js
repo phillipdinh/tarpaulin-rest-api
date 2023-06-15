@@ -1,4 +1,6 @@
-const { User } = require('../models/user.model');
+const { User, UserClientFields } = require('../models/user.model');
+const { Course } = require('../models/course.model');
+const { UserCourse } = require('../userCourse.model');
 const { genToken, invalidRoleMessage } = require('../middleware/auth.middleware');
 
 async function createUser(req, res) {
@@ -41,9 +43,43 @@ of classes the User is enrolled in (for student Users) or teaching (for instruct
 async function getUserById(req, res) {
     if (req.user && req.params.id == req.user) {
         try {
-            const user = await User.findByPk(req.params.id);
+            const user = await User.findByPk(req.user,
+            {
+                attributes: [
+                    'id',
+                    'name',
+                    'email',
+                    'role'
+                ]
+            });
+
             if (user) {
-                res.status(200).json(user);
+                if (user.role == 'student') {
+                    const resBody = {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                        courses: []
+                    }
+                    res.status(200).json(resBody)
+                    
+                } else if (user.role == 'instructor') {
+                    const courses = await Course.findAll({
+                        where: { instructorId: user.id }
+                    })
+                    const resBody = {
+                        id: user.id,
+                        name: user.name,
+                        email: user.email,
+                        role: user.role,
+                        courses: courses
+                    }
+                    res.status(200).json(resBody)
+                } else {
+                    res.status(200).json(user);
+                }
+                
             } else {
                 res.status(404).json({ error: 'User not found' });
             }

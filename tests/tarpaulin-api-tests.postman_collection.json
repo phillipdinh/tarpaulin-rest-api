@@ -160,40 +160,6 @@
 							"response": []
 						},
 						{
-							"name": "Fetch student information",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{adminToken}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{baseUrl}}/users/:id",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "1"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Fetch instructor information",
 							"request": {
 								"auth": {
