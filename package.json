@@ -4,6 +4,8 @@
   "description": "API for Tarpaulin, a CS 493 final project at OSU",
   "main": "index.js",
   "scripts": {
+    "start": "node src/server.js",
+    "initdb": "node initDb.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

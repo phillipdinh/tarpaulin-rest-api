@@ -9,7 +9,7 @@ require("dotenv").config()
 const express = require("express")
 const morgan = require("morgan")
 
-const api = require("./api")
+const api = require("./routes")
 const sequelize = require("./lib/sequelize")
 const { rateLimit } = require("./middleware/rate.middleware")
 const { checkAuth } = require("./middleware/auth.middleware")
