@@ -4,7 +4,7 @@ const {
     AssignmentClientFields
 } = require("../models/assignment.model")
 
-const Course = require('../models/course.model')
+const { Course } = require('../models/course.model')
 
 const { invalidRoleMessage } = require('../middleware/auth.middleware')
 

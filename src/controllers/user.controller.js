@@ -3,6 +3,8 @@ const { Course } = require('../models/course.model');
 const { UserCourse } = require('../models/userCourse.model');
 const { genToken, invalidRoleMessage } = require('../middleware/auth.middleware');
 
+const bcrypt = require('bcryptjs')
+
 async function createUser(req, res) {
     if (req.body.role == 'student' || (req.user && req.userRole == 'admin')) {
         try {
