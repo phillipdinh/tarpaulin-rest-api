@@ -1,4 +1,3 @@
-const { Router } = require("express")
 const { ValidationError } = require("sequelize")
 const {
     Assignment,
@@ -10,7 +9,9 @@ const {
     SubmissionClientFields
 } = require("../models/submission.model")
 
+const Course = require('../models/course.model')
 
+const { invalidRoleMessage } = require('../middleware/auth.middleware')
 
 /* TODO  /assignments Post
  * Create and store a new Assignment with specified data and adds it to the application's database.
@@ -20,19 +21,32 @@ const {
  */
 async function createAssignment(req, res, next) {
     
-    // TODO Add authentication check
-    try {
-        const assignment = await Assignment.create(
-            req.body,
-            AssignmentClientFields
-        )
-        res.status(201).send({ id: assignment.id })
-    } catch (e) {
-        if (e instanceof ValidationError) {
-            res.status(400).send({ error: e.message })
-        } else {
-            next(e)
+    if (req.user && (req.userRole == 'admin' || req.userRole == 'instructor')) {
+        try {
+            const course = await Course.findByPk(req.body.courseId)
+
+            if (course) {
+                if (req.userRole == 'instructor' && course.instructorId != req.user) {
+                    return res.status(403).json(invalidRoleMessage)
+                }
+
+                const assignment = await Assignment.create(
+                    req.body,
+                    AssignmentClientFields
+                )
+                res.status(201).send({ id: assignment.id })
+            } else {
+                next()
+            }  
+        } catch (e) {
+            if (e instanceof ValidationError) {
+                res.status(400).send({ error: e.message })
+            } else {
+                next(e)
+            }
         }
+    } else {
+        res.status(403).json(invalidRoleMessage)
     }
     /*else {
 //         res.status(403).send({
@@ -70,21 +84,38 @@ async function getAssignment(req, res, next) {
  */
 async function updateAssignment(req, res, next) {
     const id = req.params.id
-    const assignment = await Assignment.findByPk(id)
+    
+    if (req.user && (req.userRole == 'admin' || req.userRole == 'instructor')) {
+        try {
+            const assignment = await Assignment.findByPk(id)
 
-    // TODO Add authentication check
-    try {
-        const result = await Assignment.update(req.body, {
-            where: { id: id },
-            fields: AssignmentClientFields
-        })
-        if (result[0] > 0) {
-            res.status(204).send()
-        } else {
-            next()
+            if (assignment) {
+                const course = await Course.findByPk(assignment.courseId)
+                if (course) {
+                    if (req.userRole == 'instructor' && course.instructorId != req.user) {
+                        return res.status(403).json(invalidRoleMessage)
+                    }
+
+                    const result = await Assignment.update(req.body, {
+                        where: { id: id },
+                        fields: AssignmentClientFields
+                    })
+                    if (result[0] > 0) {
+                        res.status(204).send()
+                    } else {
+                        next()
+                    }
+                } else {
+                    next()
+                }
+            } else {
+                next()
+            }
+        } catch (e) {
+            next(e)
         }
-    } catch (e) {
-        next(e)
+    } else {
+        return res.status(403).json(invalidRoleMessage)
     }
     /*else {
 //         res.status(403).send({
@@ -101,18 +132,35 @@ async function updateAssignment(req, res, next) {
  */
 async function deleteAssignment(req, res, next) {
     const id = req.params.id
-    const assignment = await Assignment.findByPk(id)
+    
+    if (req.user && (req.userRole == 'admin' || req.userRole == 'instructor')) {
+        try {
+            const assignment = await Assignment.findByPk(id)
+            if (assignment) {
+                const course = await Course.findByPk(assignment.courseId)
 
-    // TODO Add authentication check
-    try {
-        const result = await assignment.destroy({ where: { id: id } })
-        if (result > 0) {
-            res.status(204).send()
-        } else {
-            next()
+                if (course) {
+                    if (req.userRole == 'instructor' && course.instructorId != req.user) {
+                        return res.status(403).json(invalidRoleMessage)
+                    }
+
+                    const result = await assignment.destroy({ where: { id: id } })
+                    if (result > 0) {
+                        res.status(204).send()
+                    } else {
+                        next()
+                    }
+                } else {
+                    next()
+                }
+            } else {
+                next()
+            }
+        } catch (e) {
+            next(e)
         }
-    } catch (e) {
-        next(e)
+    } else {
+        return res.status(403).json(invalidRoleMessage)
     }
     /*else {
 //         res.status(403).send({
@@ -120,7 +168,6 @@ async function deleteAssignment(req, res, next) {
 //         })
 //     } */
 }
-
 
 
 

@@ -11,7 +11,7 @@ async function createUser(req, res) {
             res.status(400).json({ error: err.message });
         }
     } else {
-        res.status(401).json(invalidRoleMessage);
+        res.status(403).json(invalidRoleMessage);
     }
 }
 
@@ -52,7 +52,7 @@ async function getUserById(req, res) {
             res.status(500).json({ error: err.message });
         }
     } else {
-        res.status(401).json(invalidRoleMessage);
+        res.status(403).json(invalidRoleMessage);
     }
 }
 

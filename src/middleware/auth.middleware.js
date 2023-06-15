@@ -8,7 +8,7 @@ function genToken(userId) {
     return jwt.sign(payload, secretKey, { expiresIn: '24h' })
 }
 
-async function requireAuth(req, res, next){
+async function checkAuth(req, res, next){
     const authHeader = req.get('Authorization') || ''
     const authHeaderParts = authHeader.split(' ')
     const token = authHeaderParts[0] == 'Bearer' ? authHeaderParts[1] : null
@@ -19,12 +19,19 @@ async function requireAuth(req, res, next){
             req.user = payload.sub
             const user = await User.findByPk(payload.sub)
             req.userRole = user.role
+            if (user) {
+                req.validAuthToken = true
+            } else {
+                req.validAuthToken = false
+            }
         } else {
             req.user = null
             req.userRole = null
+            req.validAuthToken = false
         }
         next()
     } catch (err) {
+        req.validAuthToken = true
         res.status(401).json({ error: "Invalid authentication token.", msg: err.message })
     }
 }
@@ -32,5 +39,5 @@ async function requireAuth(req, res, next){
 const invalidRoleMessage = { error: "Unauthorized to access this resource" }
 
 exports.genToken = genToken
-exports.requireAuth = requireAuth
+exports.checkAuth = checkAuth
 exports.invalidRoleMessage = invalidRoleMessage
