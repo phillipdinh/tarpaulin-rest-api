@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 
 import {
-	createUser,
+	insertUser,
 	findUserByEmail,
 	findUserByID,
 } from "../models/user_models.js";
@@ -11,39 +11,6 @@ import {
 import { invalidRoleMessage } from "../middleware/auth.middleware.js";
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY || "your-secret-key";
-
-export async function registerStudent(req: Request, res: Response) {
-	if (req.body.role == "student") {
-		try {
-			const plainPassword = req.body.password;
-			const saltRounds = 10;
-			const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
-			req.body.password = hashedPassword;
-
-			const id = await createUser(req.body);
-			res.status(201).json({ id: id });
-		} catch (err: any) {
-			res.status(400).json({ error: err.message });
-		}
-		res.status(201).json(req.user);
-	}
-}
-
-// TODO: admin only
-export async function registerInstructor(req: Request, res: Response) {
-	if (req.user && req.user.role == "admin") {
-		try {
-			const id = await createUser(req.body);
-
-			res.status(201).json({ id: id });
-		} catch (err: any) {
-			res.status(400).json({ error: err.message });
-		}
-		res.status(201).json(req.user);
-	} else {
-		res.status(403).json(invalidRoleMessage);
-	}
-}
 
 export async function userLogin(req: Request, res: Response) {
 	try {
@@ -73,7 +40,40 @@ export async function userLogin(req: Request, res: Response) {
 			return res.status(401).json({ message: "Invalid credentials" });
 		}
 	} catch (err: any) {
-		res.status(500).json({ error: err });
+		res.status(500).json({ error: err.message });
+	}
+}
+
+export async function registerStudent(req: Request, res: Response) {
+	if (req.body.role == "student") {
+		try {
+			const plainPassword = req.body.password;
+			const saltRounds = 10;
+			const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
+			req.body.password = hashedPassword;
+
+			const id = await insertUser(req.body);
+			res.status(201).json({ id: id });
+		} catch (err: any) {
+			res.status(400).json({ error: err.message });
+		}
+		res.status(201).json(req.user);
+	}
+}
+
+// TODO: admin only
+export async function registerInstructor(req: Request, res: Response) {
+	if (req.user && req.user.role == "admin") {
+		try {
+			const id = await insertUser(req.body);
+
+			res.status(201).json({ id: id });
+		} catch (err: any) {
+			res.status(400).json({ error: err.message });
+		}
+		res.status(201).json(req.user);
+	} else {
+		res.status(403).json(invalidRoleMessage);
 	}
 }
 
@@ -116,8 +116,8 @@ export async function getUserInfo(req: Request, res: Response) {
 			} else {
 				res.status(404).json({ error: "User not found" });
 			}
-		} catch (err) {
-			res.status(500).json({ error: err });
+		} catch (err: any) {
+			res.status(500).json({ error: err.message });
 		}
 	} else {
 		res.status(403).json(invalidRoleMessage);

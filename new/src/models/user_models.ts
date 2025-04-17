@@ -1,8 +1,10 @@
 import { db } from "../db/db.js";
 
 export interface User {
-	username: string;
-	password: string;
+	id?: number;
+	username?: string;
+	password?: string;
+	name?: string;
 	email?: string;
 	// add any additional fields your users table has
 }
@@ -19,6 +21,6 @@ export function findUserByID(id: number) {
 	return db("users").where({ id }).first();
 }
 
-export function createUser(user: User) {
+export function insertUser(user: User) {
 	return db("users").insert(user);
 }

@@ -11,11 +11,11 @@ import {
 
 const router = express.Router();
 
+router.post("/login", userLogin);
+
 router.post("/register/student", registerStudent);
 
 router.post("/register/instructor", authenticateToken, registerInstructor);
-
-router.post("/login", userLogin);
 
 // Endpoint to get a user by id
 router.get("/:id", authenticateToken, getUserInfo);
