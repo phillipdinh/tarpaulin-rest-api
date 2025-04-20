@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import user_routes from "./routes/user_routes.js";
 import course_routes from "./routes/course_routes.js";
 import assignment_routes from "./routes/assignment_routes.js";
+import submission_routes from "./routes/submission_routes.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use("/users", user_routes);
 app.use("/courses", course_routes);
 app.use("/assignments", assignment_routes);
+app.use("/submissions", submission_routes);
 
 // Start server
 app.listen(PORT, () => {
