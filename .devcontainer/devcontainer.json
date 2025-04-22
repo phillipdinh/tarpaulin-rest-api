@@ -9,6 +9,5 @@
 			"extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
 		}
 	},
-	"forwardPorts": [3000, 3306],
-	"mounts": ["source=mysql_data,target=/var/lib/mysql,type=volume"]
+	"forwardPorts": [3000, 3306]
 }
