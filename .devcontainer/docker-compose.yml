@@ -2,14 +2,14 @@ version: "3.8"
 
 services:
     dev:
-    image: mcr.microsoft.com/devcontainers/javascript-node:18
-    volumes:
-        - .:/workspace:cached
-    command: sleep infinity
-    ports:
-        - "3000:3000"
-    depends_on:
-        - mysql
+        image: mcr.microsoft.com/devcontainers/javascript-node:18
+        volumes:
+            - .:/workspace:cached
+        command: sleep infinity
+        ports:
+            - "3000:3000"
+        depends_on:
+            - mysql
 
     mysql:
         image: mysql:8.0
