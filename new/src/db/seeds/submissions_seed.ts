@@ -166,5 +166,54 @@ export async function seed(knex: Knex): Promise<void> {
 			timestamp: "2023-04-01T14:00:00",
 			grade: 90,
 		},
+		{
+			id: 24,
+			assignmentID: 4, // Assignment: Linear Algebra
+			studentID: 3, // Student ID 3 (valid student)
+			timestamp: "2023-04-02T09:00:00",
+			grade: 88,
+		},
+		{
+			id: 25,
+			assignmentID: 4, // Assignment: Linear Algebra
+			studentID: 4, // Student ID 4 (valid student)
+			timestamp: "2023-04-02T09:30:00",
+			grade: 80,
+		},
+		{
+			id: 26,
+			assignmentID: 4, // Assignment: Linear Algebra
+			studentID: 5, // Student ID 5 (valid student)
+			timestamp: "2023-04-02T10:00:00",
+			grade: 92,
+		},
+		{
+			id: 27,
+			assignmentID: 4, // Assignment: Linear Algebra
+			studentID: 6, // Student ID 6 (valid student)
+			timestamp: "2023-04-02T10:30:00",
+			grade: 70,
+		},
+		{
+			id: 28,
+			assignmentID: 5, // Assignment: Thermodynamics
+			studentID: 7, // Student ID 7 (valid student)
+			timestamp: "2023-04-02T11:00:00",
+			grade: 75,
+		},
+		{
+			id: 29,
+			assignmentID: 5, // Assignment: Thermodynamics
+			studentID: 8, // Student ID 8 (valid student)
+			timestamp: "2023-04-02T11:30:00",
+			grade: 80,
+		},
+		{
+			id: 30,
+			assignmentID: 5, // Assignment: Thermodynamics
+			studentID: 9, // Student ID 9 (valid student)
+			timestamp: "2023-04-02T12:00:00",
+			grade: 77,
+		},
 	]);
 }

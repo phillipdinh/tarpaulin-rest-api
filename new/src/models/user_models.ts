@@ -24,3 +24,7 @@ export function findUserByID(id: number) {
 export function insertUser(user: User) {
 	return db("users").insert(user);
 }
+
+export function findCoursesByStudentID(id: number) {
+	return db("user_courses").where({ studentID: id }).select("courseID");
+}

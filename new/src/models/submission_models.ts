@@ -45,9 +45,13 @@ export function findStudentInCourseByAssignmentID(
 				.where("id", assignmentID)
 				.first()
 		)
-		.first(); // returns undefined if not found
+		.first();
 }
 
 export function updateSubmission(id: number, submission: Submission) {
 	return db("submissions").where({ id }).update(submission);
+}
+
+export function deleteSubmissionsByAssignmentID(assignmentID: number) {
+	return db("submissions").where({ assignmentID }).del();
 }

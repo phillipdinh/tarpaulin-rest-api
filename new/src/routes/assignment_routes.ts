@@ -17,8 +17,7 @@ import { authenticateToken } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-// POST a new assignment
-router.route("/").post(authenticateToken, createAssignment);
+router.route("/").post(authenticateToken, createAssignment); // POST a new assignment
 
 router
 	.route("/:id")
@@ -26,10 +25,9 @@ router
 	.patch(authenticateToken, changeAssignment) // PATCH a specific assignment by id
 	.delete(authenticateToken, removeAssignment); // DELETE a specific assignment by id
 
-// GET all submissions of an assignment
 router
 	.route("/:assignmentID/submissions")
-	.get(authenticateToken, getAllSubmissionsForAssignment)
+	.get(authenticateToken, getAllSubmissionsForAssignment) // GET all submissions of an assignment
 	.post(authenticateToken, createSubmission); // POST a new submission for an assignment
 
 export default router;

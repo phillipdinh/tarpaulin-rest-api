@@ -12,6 +12,6 @@ const router = express.Router();
 router
 	.route("/:id")
 	.get(authenticateToken, getSubmission) // GET a specific submission by id
-	.patch(authenticateToken, changeSubmission);
+	.patch(authenticateToken, changeSubmission); // Patch a specific submission by id
 
 export default router;

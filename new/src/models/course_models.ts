@@ -49,3 +49,7 @@ export function findCourseRoster(courseID: number) {
 export function findAssignmentsByCourseID(courseID: number) {
 	return db("assignments").where({ courseID });
 }
+
+export function findCoursesByInstructorID(instructorID: number) {
+	return db("courses").where({ instructorID }).select("*");
+}

@@ -15,7 +15,7 @@ import {
 } from "../models/course_models.js";
 
 import { User } from "../models/user_models.js";
-/*
+/* TODO: id or all
 Course information fetching – this action, implemented by the GET /courses
 and GET /courses/{id} endpoints, allows users to see information about all
 Courses or about a specific Course.  Note that the information included by
@@ -33,12 +33,15 @@ export async function getAllCourses(req: Request, res: Response) {
 		const limit = parseInt(req.query.limit as string) || 10;
 		const page = parseInt(req.query.page as string) || 1;
 		const offset = (page - 1) * limit;
-
 		const courses = await findAllCourses(limit, offset);
 
-		res.status(200).json(courses);
+		if (courses.length == 0) {
+			return res.status(404).json({ error: `No courses found.` });
+		}
+
+		return res.status(200).json(courses);
 	} catch (err: any) {
-		res.status(500).json({ error: err.message });
+		return res.status(500).json({ error: err.message });
 	}
 }
 
@@ -46,44 +49,43 @@ export async function createCourse(req: Request, res: Response) {
 	if (req.user && req.user.role == "admin") {
 		try {
 			const course = await insertCourse(req.body);
-			res.status(201).json({ id: course[0] });
+			return res.status(201).json({ id: course[0] });
 		} catch (err: any) {
-			res.status(400).json({ error: err.message });
+			return res.status(400).json({ error: err.message });
 		}
 	} else {
-		res.status(403).json(invalidRoleMessage);
+		return res.status(403).json(invalidRoleMessage);
 	}
 }
 
-export async function getCourseByID(req: Request, res: Response) {
+export async function getCourse(req: Request, res: Response) {
 	try {
 		const id = Number(req.params.id);
 		const course = await findCourseByID(id);
-		if (course) {
-			res.status(200).json(course);
-		} else {
-			res.status(404).json({ error: "Course not found" });
+
+		if (!course) {
+			return res.status(404).json({ error: "Course not found" });
 		}
+		return res.status(200).json(course);
 	} catch (err: any) {
-		res.status(500).json({ error: err.message });
+		return res.status(500).json({ error: err.message });
 	}
 }
 
-export async function changeCourseByID(req: Request, res: Response) {
+export async function changeCourse(req: Request, res: Response) {
 	if (
 		req.user &&
 		(req.user.role == "admin" || req.user.role == "instructor")
 	) {
-		const id = Number(req.params.id);
 		try {
+			const id = Number(req.params.id);
 			const existingCourse = await findCourseByID(id);
 
 			if (!existingCourse) {
-				return res.status(404).json({ message: "Course not found" });
+				return res.status(404).json({
+					error: `Course with ID ${id} not found.`,
+				});
 			}
-
-			console.log(existingCourse);
-			console.log(req.user);
 
 			if (
 				req.user.role === "instructor" &&
@@ -97,60 +99,68 @@ export async function changeCourseByID(req: Request, res: Response) {
 
 			await updateCourseByID(id, req.body);
 
-			res.status(200).json({ course: id });
+			return res.status(200).json({ course: id });
 		} catch (err: any) {
-			res.status(400).json({ error: err.message });
+			return res.status(400).json({ error: err.message });
 		}
 	} else {
-		res.status(403).json(invalidRoleMessage);
+		return res.status(403).json(invalidRoleMessage);
 	}
 }
 
-export async function removeCourseByID(req: Request, res: Response) {
+export async function removeCourse(req: Request, res: Response) {
 	if (req.user && req.user.role == "admin") {
-		const id = Number(req.params.id);
 		try {
+			const id = Number(req.params.id);
 			await deleteCourseByID(id);
-			res.status(204).end();
+
+			return res.status(204).end();
 		} catch (err: any) {
-			res.status(500).json({ error: err.message });
+			return res.status(500).json({ error: err.message });
 		}
 	} else {
-		res.status(403).json(invalidRoleMessage);
+		return res.status(403).json(invalidRoleMessage);
 	}
 }
 
-export async function getStudentsByCourseID(req: Request, res: Response) {
+export async function getStudents(req: Request, res: Response) {
 	if (
 		req.user &&
 		(req.user.role == "admin" || req.user.role == "instructor")
 	) {
-		const courseID = Number(req.params.id);
 		try {
+			const courseID = Number(req.params.id);
 			const existingCourse = await findCourseByID(courseID);
+
+			if (!existingCourse) {
+				return res.status(404).json({
+					error: `Course with ID ${courseID} not found.`,
+				});
+			}
+
+			if (
+				req.user.role == "instructor" &&
+				existingCourse.instructorID !== req.user.id
+			) {
+				return res.status(403).json(invalidRoleMessage);
+			}
 
 			const students = await findStudentsByCourseID(courseID);
 
-			if (students) {
-				if (
-					req.user.role == "instructor" &&
-					existingCourse.instructorID !== req.user.id
-				) {
-					return res.status(403).json(invalidRoleMessage);
-				}
-				res.status(200).json(students);
-			} else {
-				res.status(404).json({ error: "Course not found" });
+			if (!students) {
+				return res.status(404).json({ error: "No students found." });
 			}
+
+			return res.status(200).json(students);
 		} catch (err: any) {
-			res.status(500).json({ error: err.message });
+			return res.status(500).json({ error: err.message });
 		}
 	} else {
-		res.status(403).json(invalidRoleMessage);
+		return res.status(403).json(invalidRoleMessage);
 	}
 }
 
-export async function changeEnrollmentByCourseID(req: Request, res: Response) {
+export async function changeEnrollment(req: Request, res: Response) {
 	if (
 		req.user &&
 		(req.user.role == "admin" || req.user.role == "instructor")
@@ -163,9 +173,8 @@ export async function changeEnrollmentByCourseID(req: Request, res: Response) {
 			});
 		}
 
-		const courseID = Number(req.params.id);
-
 		try {
+			const courseID = Number(req.params.id);
 			const existingCourse = await findCourseByID(courseID);
 
 			if (
@@ -176,7 +185,9 @@ export async function changeEnrollmentByCourseID(req: Request, res: Response) {
 			}
 
 			if (!existingCourse) {
-				return res.status(404).json({ error: "Course not found" });
+				return res
+					.status(404)
+					.json({ error: `Course with ID ${courseID} not found.` });
 			}
 
 			// Unenroll students
@@ -193,10 +204,10 @@ export async function changeEnrollmentByCourseID(req: Request, res: Response) {
 				.status(200)
 				.json({ success: "Enrollment updated successfully" });
 		} catch (err: any) {
-			res.status(500).json({ error: err.message });
+			return res.status(500).json({ error: err.message });
 		}
 	} else {
-		res.status(403).json(invalidRoleMessage);
+		return res.status(403).json(invalidRoleMessage);
 	}
 }
 
@@ -213,7 +224,7 @@ the GET /courses/{id}/roster endpoint, allows certain authorized
 
 Importantly, this file must be generated by the API, based on the list of enrolled students stored in the database.
  */
-export async function getRosterByCourseID(req: Request, res: Response) {
+export async function getRoster(req: Request, res: Response) {
 	if (
 		req.user &&
 		(req.user.role == "admin" || req.user.role == "instructor")
@@ -221,40 +232,46 @@ export async function getRosterByCourseID(req: Request, res: Response) {
 		try {
 			const courseID = Number(req.params.id);
 			const existingCourse = await findCourseByID(courseID);
+
+			if (!existingCourse) {
+				return res.status(404).json({ error: "Course not found" });
+			}
+
+			if (
+				req.user.role == "instructor" &&
+				existingCourse.instructorID != req.user.id
+			) {
+				return res.status(403).json(invalidRoleMessage);
+			}
+
 			const roster = await findCourseRoster(courseID);
 
-			if (roster) {
-				if (
-					req.user.role == "instructor" &&
-					existingCourse.instructorID != req.user.id
-				) {
-					return res.status(403).json(invalidRoleMessage);
-				}
-
-				// Convert the user data to CSV
-				const csvData = roster
-					.map(
-						(user: User) =>
-							`"${user.id}","${user.name}","${user.email}"`
-					)
-					.join("\n");
-				res.status(200).send(csvData);
-			} else {
-				res.status(404).json({ error: "Course not found" });
+			if (!roster) {
+				return res.status(404).json({ error: "No roster found" });
 			}
+
+			// Convert the user data to CSV
+			const csvData = roster
+				.map(
+					(user: User) =>
+						`"${user.id}","${user.name}","${user.email}"`
+				)
+				.join("\n");
+
+			return res.status(200).send(csvData);
 		} catch (err: any) {
-			res.status(500).json({ error: err.message });
+			return res.status(500).json({ error: err.message });
 		}
 	}
 }
 
-export async function getAssignmentsByCourseID(req: Request, res: Response) {
+export async function getAssignments(req: Request, res: Response) {
 	try {
 		const courseID = Number(req.params.id);
 		const assignments = await findAssignmentsByCourseID(courseID);
 
-		res.status(200).json(assignments);
+		return res.status(200).json(assignments);
 	} catch (err: any) {
-		res.status(500).json({ error: err.message });
+		return res.status(500).json({ error: err.message });
 	}
 }

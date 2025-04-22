@@ -7,7 +7,10 @@ import {
 	updateAssignmentByID,
 	deleteAssignmentByID,
 } from "../models/assignment_models.js";
+
 import { findCourseByID } from "../models/course_models.js";
+
+import { deleteSubmissionsByAssignmentID } from "../models/submission_models.js";
 
 /*
  * Create and store a new Assignment with specified data and adds it to the application's database.
@@ -104,7 +107,6 @@ export async function changeAssignment(req: Request, res: Response) {
 	}
 }
 
-// TODO: Remove submissions
 /*
  * Completely removes the data for the specified Assignment, including all submissions.
  * Only an authenticated User with 'admin' role or an authenticated 'instructor' User
@@ -142,7 +144,11 @@ export async function removeAssignment(req: Request, res: Response) {
 				return res.status(403).json(invalidRoleMessage);
 			}
 
-			const result = await deleteAssignmentByID(assignmentID);
+			await deleteSubmissionsByAssignmentID(assignmentID);
+			await deleteAssignmentByID(assignmentID);
+			return res.status(200).json({
+				message: "Assignment and related submissions deleted.",
+			});
 		} catch (err: any) {
 			return res.status(400).json({ error: err.message });
 		}

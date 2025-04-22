@@ -22,5 +22,3 @@ const config: { [key: string]: Knex.Config } = {
 };
 
 export default config;
-
-// Migrations: NODE_OPTIONS="--loader ts-node/esm" npx knex migrate:make create_users_table -x ts

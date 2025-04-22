@@ -49,15 +49,8 @@ export async function changeSubmission(req: Request, res: Response) {
 				});
 			}
 
-			// TODO: check instructor
-			// if (req.user.id != submission.studentID) {
-			// 	return res.status(403).json(invalidRoleMessage);
-			// }
-
 			const result = await updateSubmission(id, req.body);
-			console.log(result);
-			console.log(id);
-			console.log(req.body);
+
 			return res
 				.status(200)
 				.send({ success: "Submission updated successfully" });
@@ -69,7 +62,7 @@ export async function changeSubmission(req: Request, res: Response) {
 	}
 }
 
-/* TODO: check page number
+/*
  * Returns the list of all Submissions for an Assignment. This list should be paginated.
  * Only an authenticated User with 'admin' role or an authenticated 'instructor' User
  * whose ID matches the `instructorId` of the Course corresponding to the Assignment's `courseId`
