@@ -1,8 +1,8 @@
-version: "3.8"
-
 services:
     dev:
-        image: mcr.microsoft.com/devcontainers/javascript-node:18
+        build:
+            context: .
+            dockerfile: .devcontainer/Dockerfile
         command: sleep infinity
         ports:
             - "3000:3000"
