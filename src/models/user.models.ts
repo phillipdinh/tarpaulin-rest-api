@@ -6,6 +6,7 @@ export interface User {
 	password?: string;
 	name?: string;
 	email?: string;
+	role?: string;
 	// add any additional fields your users table has
 }
 

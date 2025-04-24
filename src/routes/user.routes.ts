@@ -7,7 +7,7 @@ import {
 	registerInstructor,
 	userLogin,
 	getUserInfo,
-} from "../controllers/user_controller.js";
+} from "../controllers/user.controller.js";
 
 const router = express.Router();
 

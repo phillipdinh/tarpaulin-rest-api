@@ -11,7 +11,7 @@ import {
 	changeEnrollment,
 	getRoster,
 	getAssignments,
-} from "../controllers/course_controller.js";
+} from "../controllers/course.controller.js";
 const router = express.Router();
 
 router.route("/").get(getAllCourses).post(authenticateToken, createCourse);

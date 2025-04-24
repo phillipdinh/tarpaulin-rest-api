@@ -5,13 +5,13 @@ import {
 	getAssignment,
 	changeAssignment,
 	removeAssignment,
-} from "../controllers/assignment_controller.js";
+} from "../controllers/assignment.controller.js";
 
 import {
 	getAllSubmissionsForAssignment,
 	getSubmission,
 	createSubmission,
-} from "../controllers/submission_controller.js";
+} from "../controllers/submission.controller.js";
 
 import { authenticateToken } from "../middleware/auth.middleware.js";
 

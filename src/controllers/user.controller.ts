@@ -7,9 +7,9 @@ import {
 	findUserByEmail,
 	findUserByID,
 	findCoursesByStudentID,
-} from "../models/user_models.js";
+} from "../models/user.models.js";
 
-import { findCoursesByInstructorID } from "../models/course_models.js";
+import { findCoursesByInstructorID } from "../models/course.models.js";
 
 import { invalidRoleMessage } from "../middleware/auth.middleware.js";
 

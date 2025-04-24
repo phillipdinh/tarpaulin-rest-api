@@ -12,9 +12,9 @@ import {
 	insertStudentToCourse,
 	findCourseRoster,
 	findAssignmentsByCourseID,
-} from "../models/course_models.js";
+} from "../models/course.models.js";
 
-import { User } from "../models/user_models.js";
+import { User } from "../models/user.models.js";
 /* TODO: id or all
 Course information fetching – this action, implemented by the GET /courses
 and GET /courses/{id} endpoints, allows users to see information about all

@@ -1,7 +1,7 @@
 // middleware/auth.middleware.ts
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { findUserByID } from "../models/user_models.js";
+import { findUserByID } from "../models/user.models.js";
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY || "your-secret-key";
 

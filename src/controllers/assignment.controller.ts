@@ -6,11 +6,11 @@ import {
 	findAssignmentByID,
 	updateAssignmentByID,
 	deleteAssignmentByID,
-} from "../models/assignment_models.js";
+} from "../models/assignment.models.js";
 
-import { findCourseByID } from "../models/course_models.js";
+import { findCourseByID } from "../models/course.models.js";
 
-import { deleteSubmissionsByAssignmentID } from "../models/submission_models.js";
+import { deleteSubmissionsByAssignmentID } from "../models/submission.models.js";
 
 /*
  * Create and store a new Assignment with specified data and adds it to the application's database.

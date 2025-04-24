@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { invalidRoleMessage } from "../middleware/auth.middleware.js";
 
-import { Assignment, findAssignmentByID } from "../models/assignment_models.js";
-import { Course, findCourseByID } from "../models/course_models.js";
+import { Assignment, findAssignmentByID } from "../models/assignment.models.js";
+import { Course, findCourseByID } from "../models/course.models.js";
 
 import {
 	findSubmissionsForAssignment,
@@ -11,7 +11,7 @@ import {
 	insertSubmission,
 	findStudentInCourseByAssignmentID,
 	updateSubmission,
-} from "../models/submission_models.js";
+} from "../models/submission.models.js";
 
 export async function getSubmission(req: Request, res: Response) {
 	if (

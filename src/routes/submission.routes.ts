@@ -3,7 +3,7 @@ import express from "express";
 import {
 	getSubmission,
 	changeSubmission,
-} from "../controllers/submission_controller.js";
+} from "../controllers/submission.controller.js";
 
 import { authenticateToken } from "../middleware/auth.middleware.js";
 
