@@ -12,10 +12,11 @@ import {
 	insertStudentToCourse,
 	findCourseRoster,
 	findAssignmentsByCourseID,
+	countCourses,
 } from "../models/course.models.js";
 
 import { User } from "../models/user.models.js";
-/* TODO: id or all
+/*
 Course information fetching – this action, implemented by the GET /courses
 and GET /courses/{id} endpoints, allows users to see information about all
 Courses or about a specific Course.  Note that the information included by
@@ -39,7 +40,28 @@ export async function getAllCourses(req: Request, res: Response) {
 			return res.status(404).json({ error: `No courses found.` });
 		}
 
-		return res.status(200).json(courses);
+		const result = await countCourses();
+		const count: number = result[0].count;
+
+		const lastPage = Math.ceil(count / limit);
+		const links: Record<string, string> = {};
+
+		if (page < lastPage) {
+			links.nextPage = `/courses?page=${page + 1}`;
+			links.lastPage = `/courses?page=${lastPage}`;
+		}
+		if (page > 1) {
+			links.prevPage = `/courses?page=${page - 1}`;
+			links.firstPage = `/courses?page=1`;
+		}
+		return res.status(200).json({
+			courses,
+			pageNumber: page,
+			totalPages: lastPage,
+			pageSize: limit,
+			totalCount: count,
+			links: links,
+		});
 	} catch (err: any) {
 		return res.status(500).json({ error: err.message });
 	}

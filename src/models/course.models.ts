@@ -53,3 +53,7 @@ export function findAssignmentsByCourseID(courseID: number) {
 export function findCoursesByInstructorID(instructorID: number) {
 	return db("courses").where({ instructorID }).select("*");
 }
+
+export function countCourses(): Promise<{ count: number }[]> {
+	return db("courses").count("* as count");
+}
