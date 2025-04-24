@@ -11,6 +11,20 @@ Tarpaulin is a TypeScript-based REST API designed as an alternative to platforms
 |   |-- /docker-compose.yml
 
 |-- /src
+|   |-- /db
+|   |   |--/migrations
+|   |   |  |--create_users_table.ts
+|   |   |  |--create_courses_table.ts
+|   |   |  |--create_assignments_table.ts
+|   |   |  |--create_submissions_table.ts
+|   |   |  |--create_user_courses_table.ts
+|   |   |--/seeds
+|   |   |  |--users_seed.ts
+|   |   |  |--courses_seed.ts
+|   |   |  |--assignments_seed.ts
+|   |   |  |--submissions_seed.ts
+|   |   |  |--user_courses_seed.ts
+
 |   |-- /controllers
 |   |   |-- user.controller.ts
 |   |   |-- course.controller.ts
@@ -26,22 +40,9 @@ Tarpaulin is a TypeScript-based REST API designed as an alternative to platforms
 |   |   |-- course.routes.ts
 |   |   |-- assignment.routes.ts
 |   |   |-- submission.routes.ts
+
 |   |-- /middlewares
 |   |   |-- auth.middleware.ts
-
-|   |-- /db
-|   |   |--/migrations
-|   |   |  |--20250313082751_create_users_table.ts
-|   |   |  |--20250402223217_create_courses_table.ts
-|   |   |  |--20250402224344_create_assignments_table.ts
-|   |   |  |--20250402232113_create_submissions_table.ts
-|   |   |  |--20250417032418_create_user_courses_table.ts
-|   |   |--/seeds
-|   |   |  |--users_seed.ts
-|   |   |  |--courses_seed.ts
-|   |   |  |--assignments_seed.ts
-|   |   |  |--submissions_seed.ts
-|   |   |  |--user_courses_seed.ts
 
 |-- /types/express
 |   |-- index.d.ts
@@ -50,13 +51,15 @@ Tarpaulin is a TypeScript-based REST API designed as an alternative to platforms
 |   |-- / environment
 |   |-- / collection
 
-|-- .env.example
+
 |-- knexfile.ts
 |-- server.ts
+
+|-- .env
+|-- openapi.yaml
 |-- tsconfig.json
 |-- package.json
 |-- package-lock.json
-|-- .gitignore
 |-- README.md
 ```
 
