@@ -280,6 +280,14 @@ export async function getRoster(req: Request, res: Response) {
 				)
 				.join("\n");
 
+			// Set headers for file download
+			res.setHeader("Content-Type", "text/csv");
+			res.setHeader(
+				"Content-Disposition",
+				'attachment; filename="roster.csv"'
+			);
+
+			// Send the CSV data as a file
 			return res.status(200).send(csvData);
 		} catch (err: any) {
 			return res.status(500).json({ error: err.message });
