@@ -2,7 +2,7 @@
 	"name": "Tarpaulin Dev",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "dev",
-	"workspaceFolder": "/workspace",
+	"workspaceFolder": "/workspaces/tarpaulin-rest-api",
 	"postCreateCommand": "npm install",
 	"customizations": {
 		"vscode": {
@@ -10,5 +10,7 @@
 		}
 	},
 	"forwardPorts": [3000, 3306],
-	"mounts": ["source=mysql_data,target=/var/lib/mysql,type=volume"]
+	"mounts": [
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+	]
 }
